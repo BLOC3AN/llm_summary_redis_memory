@@ -1,0 +1,44 @@
+{
+    "name": "summary_history_by_session_id",
+    "description": "Summarize conversation history by session id",
+    "args_schema": {
+        "type": "object",
+        "properties": {
+            "session_id": {
+                "type": "string",
+                "description": "Session id of the conversation to summarize"
+            }
+        },
+        "required": ["session_id"]
+    },
+    "output_schema": {
+        "type": "object",
+        "properties": {
+            "summary": {
+                "type": "object",
+                "description": "Summary of the conversation",
+                "properties":{
+                    "address":{
+                        "type": "array",
+                        "description": "All Addresses of customer from conversation"
+                    },
+                    "date":{
+                        "type":"array",
+                        "description": "All previous dates of conversation",
+                        "format": "date-time ISO 8601, YYYY-MM-DDTHH:MM:SSZ, Timezone Asia/Ho Chi Minh"
+                    },
+                    "service_type":{
+                        "type": "array",
+                        "description": "all service types from conversation"
+                    },
+                    "summary_detail":{
+                        "type": "string",
+                        "description": "Summary of the conversation"
+                    }
+                }
+
+            }
+        },
+        "required": ["summary"]
+    }
+}

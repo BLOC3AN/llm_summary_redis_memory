@@ -1,0 +1,58 @@
+services:
+  # Main Redis Summary Application
+  redis_summary_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: redis_summary_app
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    # Test Redis connection before starting
+    healthcheck:
+      test: ["CMD", "python", "-c", "import redis; r=redis.Redis(host='${REDIS_HOST}', port=${REDIS_PORT}); r.ping()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    profiles:
+      - manual  # Use 'docker-compose --profile manual up' to run manually
+
+  # Optional: Redis Commander for Redis management (connects to external Redis)
+  redis_commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis_commander
+    restart: unless-stopped
+    environment:
+      - REDIS_HOSTS=external:${REDIS_HOST}:${REDIS_PORT}
+    ports:
+      - "8081:8081"
+    profiles:
+      - tools  # Use 'docker-compose --profile tools up' to include this
+
+  # Optional: Scheduler service for automatic summary execution
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: redis_summary_scheduler
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - SCHEDULE_INTERVAL=${SCHEDULE_INTERVAL:-3600}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./scheduler.py:/app/scheduler.py
+    command: python scheduler.py
+    profiles:
+      - scheduler  # Use 'docker-compose --profile scheduler up' to run scheduler

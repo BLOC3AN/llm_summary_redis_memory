@@ -1,0 +1,12 @@
+# Core dependencies
+redis==5.0.1
+python-dotenv==1.0.0
+pydantic==2.5.3
+
+# LangChain and AI dependencies
+langchain-openai==0.1.23
+langchain-core==0.2.38
+langchain-google-genai==1.0.10
+
+# Additional dependencies
+typing-extensions>=4.11
