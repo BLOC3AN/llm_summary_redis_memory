@@ -2,8 +2,8 @@ services:
   # Main Redis Summary Application
   redis_summary_app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: deployment/Dockerfile
     container_name: redis_summary_app
     restart: unless-stopped
     environment:
@@ -39,8 +39,8 @@ services:
   # Optional: Scheduler service for automatic summary execution
   scheduler:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: deployment/Dockerfile
     container_name: redis_summary_scheduler
     restart: unless-stopped
     environment:

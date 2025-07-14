@@ -21,12 +21,12 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY src ./src
-COPY main.py .
-COPY test_auto_summary.py .
-COPY demo_auto_summary.py .
-COPY .env .env
+# Copy application code from parent directory
+COPY ../src ./src
+COPY ../main.py .
+COPY ../test_auto_summary.py .
+COPY ../demo_auto_summary.py .
+COPY ../.env .env
 
 # Create logs directory
 RUN mkdir -p /app/logs

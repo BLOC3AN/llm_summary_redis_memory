@@ -29,7 +29,12 @@ cd deployment
 
 ### 2. Cấu hình API keys
 
-Chỉnh sửa file `.env`:
+Tạo file `.env` từ template:
+```bash
+cp deployment/.env.example .env
+```
+
+Chỉnh sửa file `.env` ở thư mục gốc:
 ```bash
 nano .env
 ```
@@ -149,17 +154,25 @@ Thay đổi `NUMBER_OF_SUMMARY` trong `.env` để điều chỉnh khi nào auto
 ## 📁 Cấu trúc thư mục
 
 ```
-deployment/
-├── docker-compose.yml    # Docker Compose configuration
-├── Dockerfile           # Application container
-├── requirements.txt     # Python dependencies
-├── scheduler.py         # Scheduler service
-├── deploy.sh           # Deployment script
-├── .env.example        # Environment template
-├── .env                # Your environment (create from .env.example)
-├── logs/               # Application logs
-├── data/               # Application data
-└── backups/            # Backup files
+redis_summary/
+├── src/                    # Source code
+├── main.py                 # Main application
+├── test_auto_summary.py    # Test files
+├── demo_auto_summary.py    # Demo files
+├── .env                    # Environment configuration
+└── deployment/
+    ├── docker-compose.yml  # Docker Compose configuration
+    ├── Dockerfile          # Application container
+    ├── requirements.txt    # Python dependencies
+    ├── scheduler.py        # Scheduler service
+    ├── deploy.sh          # Deployment script
+    ├── .env.example       # Environment template
+    ├── prepare_build.sh   # Build preparation script
+    ├── redis.conf         # Redis configuration
+    ├── README.md          # This file
+    ├── logs/              # Application logs (mounted)
+    ├── data/              # Application data (mounted)
+    └── backups/           # Backup files
 ```
 
 ## 🔍 Troubleshooting
